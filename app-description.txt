@@ -1,0 +1,67 @@
+Shout it box.
+
+1- create the database
+
+2- connect to the database using 
+
+$con = mysqli_connect("localhost","root","root","shoutit");
+
+create and IF statement to see if the connection is successfull
+
+3-Include the database file into the index.
+
+4-Create the query and create a variable that executes the query
+
+$query = "SELECT * FROM shouts ORDER BY time DESC";
+$shouts = mysqli_query($con, $query);
+
+5- create the while loop that fetches content from database (use mysqli_fetch_assoc() function)
+
+<?php while($row = mysqli_fetch_assoc($shouts)) : ?>    
+
+
+6- create the process.php file
+
+7- in the process.php file
+
+check if the form has been subtmited
+
+if(isset($_POST[''submit'])) {
+
+ }
+ 
+ 8- user variables to contained the new sanitezed string from the POST variables
+ 
+     $user = mysqli_real_escape_string($con, $_POST['user']);
+
+9- format time
+
+  date_default_timezone_set('America/New York');
+    $time = date('hi:i:s a', time());
+    
+10- make an IF statement if any of the fields is empty or not set, pass a URL error messega
+
+    if(!isset($user) || $user == '' || !isset($message) || $message == ''){
+        echo 'BAD!!!!';
+        $error_messsage = "Please fill in your name and a message";
+        header("Location: index.php?error=".urlencode($error_messsage));
+        exit();
+    } 
+
+11- If the variables from the fields are submitted succesfully, execute a SQL query to insert the content in the database
+
+declare the query and match columns names with the post variable names
+
+$insert = "INSERT INTO shouts (user, message, time)
+                VALUES ('$user', '$message', '$time')";
+                
+12 - create an if statement and execute the query with mysqli_query($con, $insert)
+
+   if(!mysqli_query($con, $insert)){
+            die('Error: '.mysqli_error($con));
+        } else {
+            echo "values inserted";
+            //if insertion is successful, use the header function to redirect the page
+            header("Location: index.php");
+            exit();
+        }
